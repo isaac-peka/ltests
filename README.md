@@ -1,0 +1,5 @@
+- Taken mostly from pwnkernel and is a little bit janky
+- To build kernel run `build.sh`
+- To launch the kernel run `launch.sh`
+- `./home` is shared with the vm at `/root`
+- Any `.ko` files found in `modules/` will be automatically added to `/` (run `insmod` inside)
