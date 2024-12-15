@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-export KERNEL_VERSION=6.11.3
+export KERNEL_VERSION=6.1.43
 export BUSYBOX_VERSION=1.35.0
 
 #
@@ -55,12 +55,13 @@ echo "CONFIG_ANDROID_BINDER_IPC_SELFTEST=n" >> linux-$KERNEL_VERSION/.config
 echo "CONFIG_DMABUF_HEAPS=y" >> linux-$KERNEL_VERSION/.config
 echo "CONFIG_DMABUF_HEAPS_SYSTEM=y" >> linux-$KERNEL_VERSION/.config
 echo "CONFIG_KASLR=y" >> linux-$KERNEL_VERSION/.config
+echo "CONFIG_SHADOW_CALL_STACK=y" >> linux-$KERNEL_VERSION/.config
 
 # echo "CONFIG_KSAN=y" >> linux-$KERNEL_VERSION/.config
 
 
 ln -sf linux linux-$KERNEL_VERSION
-make -C linux-$KERNEL_VERSION prepare modules_prepare
+make CFLAGS="-O1" -C linux-$KERNEL_VERSION prepare modules_prepare
 make CFLAGS="-O1" -C linux-$KERNEL_VERSION -j$(nproc) bzImage
 
 #

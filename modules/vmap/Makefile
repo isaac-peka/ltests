@@ -1,15 +1,13 @@
 KVERSION=$(shell uname -r)
 
-DIRS="${PWD}"
-MY_CFLAGS += -I$(src)
-DEBUG_CFLAGS += -g -DDEBUG
-
 obj-m += km_vmap.o
-
+MY_CFLAGS += -g -DDEBUG
 ccflags-y += ${MY_CFLAGS}
 CC += ${MY_CFLAGS}
 
-all:
+all: debug user install
+
+release:
 	make -C ../../linux M=${PWD} SUBDIRS=${PWD} modules
 
 debug:
