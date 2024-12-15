@@ -138,24 +138,26 @@ static long km_vmap_ioctl_fork(struct km_vmap_session *session,
                                 NUMA_NO_NODE,
                                 __builtin_return_address(0));
   
-  printk("[+] Stack: %llx - %llx", (u64) alloc->stack, 
-          (u64) alloc->stack + ARM64_THREAD_SIZE);
   if (!alloc->stack) {
     status = -ENOMEM;
     goto err;
   }
+
+  printk("[+] Stack: %llx - %llx\n", (u64) alloc->stack, 
+          (u64) alloc->stack + ARM64_THREAD_SIZE);
 
   alloc->scs = __vmalloc_node(ARM64_SCS_SIZE, 1, 
                               THREADINFO_GFP & ~__GFP_ACCOUNT, 
                               NUMA_NO_NODE,
                               __builtin_return_address(0));
 
-  printk("[+] SCS: %llx - %llx", (u64) alloc->scs,
-          (u64) alloc->scs + ARM64_SCS_SIZE);
   if (!alloc->scs) {
     status = -ENOMEM;
     goto err_scs;
   }
+  
+  printk("[+] SCS: %llx - %llx\n", (u64) alloc->scs,
+          (u64) alloc->scs + ARM64_SCS_SIZE);
   
   INIT_LIST_HEAD(&alloc->head);
   list_add(&alloc->head, &session->procs);
